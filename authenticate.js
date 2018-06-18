@@ -5,7 +5,7 @@ var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jsonwebtoken');
 
-var config = require('./congif');
+var config = require('./congif.js');
 
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -21,7 +21,7 @@ opts.secretOrKey = config.secretkey;
 
 exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
     console.log("JWT payload: ", jwt_payload);
-    User.findOne({_id: jwt._id}, (err, user) =>{
+    User.findOne({_id: jwt_payload._id}, (err, user) =>{
         if(err){
             return done(err, false);
         }
