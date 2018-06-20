@@ -21,6 +21,16 @@ const Dishes = require('./models/dishes');
 
 var app = express();
 
+//secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://'+req.hostname+':'+app.get('secPort')+req.url);
+  }
+});
+
 //Connection URL
 const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
